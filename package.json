@@ -14,7 +14,8 @@
     "sass-loader": "^7.1.0",
     "node-sass": "^4.11.0",
     "customize-cra": "^0.2.12",
-    "babel-plugin-import": "^1.11.0"
+    "babel-plugin-import": "^1.11.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0"
   },
   "devDependencies": {
     "antd": "^3.16.1",

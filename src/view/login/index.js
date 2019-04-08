@@ -7,6 +7,8 @@ import {auth} from '@action/user';
 import './index.scss'
 import {isAuthenticated} from '@com/PrivateRoute'
 
+const atest = {};
+
 class Login extends Component {
     state = {
         loading: false,

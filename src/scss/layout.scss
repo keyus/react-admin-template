@@ -6,8 +6,23 @@
 .view-side{
   background: #fff;
   border-right: solid 1px #c5d6de;
+  ul{
+    padding-top: 9px;
+  }
   li{
-    transition: all .2s ease-in-out;
+    a{
+      font-size: 16px;
+      font-weight: 600;
+      color: #818181;
+      line-height: 38px;
+      padding-left: 46px;
+      transition: all .2s ease-in-out;
+      display: block;
+      &:hover,
+      &.active{
+        background: #ecf2f5;
+      }
+    }
   }
 }
 .view-header{
@@ -22,11 +37,11 @@
     padding-left: 10px;
     font-weight: 700;
     em{
-      font-size: 22px;
+      font-size: 20px;
       background: #00a8ff;
       color: #fff;
       border-radius: 3px;
-      padding: 1px 3px 1px 3px;
+      padding: 1px 4px;
     }
   }
   .view-user{
@@ -51,7 +66,8 @@
     display: block;
     color: #212529;
     font-size: 15px;
-    &:hover{
+    &:hover
+    {
       color: #00a8ff;
     }
     i{

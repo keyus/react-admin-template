@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Layout, Icon, Avatar, Popover} from 'antd';
-import {Switch,Route} from 'react-router'
+import {NavLink} from 'react-router-dom';
 import {logout} from '@action/user'
-import Home from '@view/home'
-import Test from '@view/test'
+import Router from '@view/router'
 
 const {
     Header, Sider, Content,
@@ -48,12 +47,14 @@ class View extends Component {
                     </div>
                 </Header>
                 <Layout>
-                    <Sider className='view-side'>Sider</Sider>
+                    <Sider className='view-side'>
+                        <ul>
+                            <li><NavLink to='/' exact>充值</NavLink></li>
+                            <li><NavLink to='/test'>余额</NavLink></li>
+                        </ul>
+                    </Sider>
                     <Content>
-                        <Switch>
-                            <Route component={Home} path='/' exact/>
-                            <Route component={Test} path='/test' />
-                        </Switch>
+                        <Router/>
                     </Content>
                 </Layout>
             </Layout>

@@ -1,5 +1,6 @@
 const {
     override,
+    addBabelPlugin,
     fixBabelImports,
     disableEsLint,
     addWebpackAlias,
@@ -7,6 +8,7 @@ const {
 const path = require("path");
 
 module.exports = override(
+    addBabelPlugin('@babel/plugin-proposal-optional-chaining'),
     fixBabelImports('import', {
         libraryName: 'antd',
         libraryDirectory: 'es',
