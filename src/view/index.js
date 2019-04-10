@@ -11,6 +11,7 @@ const {
 class View extends Component {
     state = {
         visible: false,
+        sideVisible: true
     }
     handleVisibleChange = (visible) => {
         this.setState({
@@ -21,10 +22,15 @@ class View extends Component {
         const {logout, history} = this.props;
         logout(history);
     }
-    render() {
-        return (
-            <Layout className='view-container'>
-                <Sider className='view-side'>
+    toggle = ()=>{
+        this.setState({
+            sideVisible: !this.state.sideVisible
+        })
+    }
+    get side(){
+        if(this.state.sideVisible){
+            return (
+                <Sider className='view-side' >
                     <div className='view-logo'>
                         <span><Icon type="thunderbolt" theme="filled" /> PP <em>支付</em></span>
                     </div>
@@ -36,10 +42,17 @@ class View extends Component {
                         <li><NavLink to='/ip'><Icon type="bulb" theme="filled"  />IP列表</NavLink></li>
                     </ul>
                 </Sider>
+            )
+        }
+    }
+    render() {
+        return (
+            <Layout className='view-container'>
+                {this.side}
                 <Layout>
                     <Header className='view-header'>
                         <div className='view-header-left'>
-                            <Icon type="menu-fold" />
+                            <Icon type="menu-fold" onClick={this.toggle}/>
                         </div>
                         <div className='view-user'>
                             <Popover
@@ -70,11 +83,11 @@ const mapState =(state)=>{
         user: state.user
     }
 }
-const mapDispath=(dispatch)=>{
+const mapDispatch=(dispatch)=>{
     return {
         logout(history){
             dispatch(logout(history))
         }
     }
 }
-export default connect(mapState,mapDispath)(View)
+export default connect(mapState,mapDispatch)(View)
