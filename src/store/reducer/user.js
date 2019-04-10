@@ -1,4 +1,3 @@
-
 let user = localStorage.getItem('user');
 try{
     user = user ? JSON.parse(user) : {}

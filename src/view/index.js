@@ -24,38 +24,42 @@ class View extends Component {
     render() {
         return (
             <Layout className='view-container'>
-                <Header className='view-header'>
+                <Sider className='view-side'>
                     <div className='view-logo'>
-                        <span><Icon type="thunderbolt" theme="filled" style={{color: '#00a8ff'}}/> PP <em>支付</em></span>
+                        <span><Icon type="thunderbolt" theme="filled" /> PP <em>支付</em></span>
                     </div>
-                    <div className='view-user'>
-                        <Popover
-                            content={
-                            <div className='view-user-popver'>
-                                <p><a onClick={this.logout}><Icon type="export" /> 退出</a></p>
-                            </div>
-                            }
-                            title={`用户：${this.props.user.username}`}
-                            trigger="click"
-                            visible={this.state.visible}
-                            placement="bottomRight"
-                            onVisibleChange={this.handleVisibleChange}
-                        >
-                            <Avatar icon="user" />
-                            <Icon type="caret-down" className='xi' />
-                        </Popover>
-                    </div>
-                </Header>
+                    <ul>
+                        <li><NavLink to='/' exact><Icon type="home" theme="filled" />首页</NavLink></li>
+                        <li><NavLink to='/order'><Icon type="tags" theme="filled"  />订单列表</NavLink></li>
+                        <li><NavLink to='/bank'><Icon type="credit-card" theme="filled" />银行账号列表</NavLink></li>
+                        <li><NavLink to='/admin'><Icon type="skin" theme="filled"  />管理账号列表</NavLink></li>
+                        <li><NavLink to='/ip'><Icon type="bulb" theme="filled"  />IP列表</NavLink></li>
+                    </ul>
+                </Sider>
                 <Layout>
-                    <Sider className='view-side'>
-                        <ul>
-                            <li><NavLink to='/' exact>充值</NavLink></li>
-                            <li><NavLink to='/test'>余额</NavLink></li>
-                        </ul>
-                    </Sider>
-                    <Content>
-                        <Router/>
-                    </Content>
+                    <Header className='view-header'>
+                        <div className='view-header-left'>
+                            <Icon type="menu-fold" />
+                        </div>
+                        <div className='view-user'>
+                            <Popover
+                                content={
+                                    <div className='view-user-popver'>
+                                        <p><a onClick={this.logout}><Icon type="export" /> 退出</a></p>
+                                    </div>
+                                }
+                                title={`用户：${this.props.user.username}`}
+                                trigger="click"
+                                visible={this.state.visible}
+                                placement="bottomRight"
+                                onVisibleChange={this.handleVisibleChange}
+                            >
+                                <Avatar icon="user" />
+                                <Icon type="caret-down" className='xi' />
+                            </Popover>
+                        </div>
+                    </Header>
+                    <Content><Router/></Content>
                 </Layout>
             </Layout>
         )
