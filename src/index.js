@@ -6,7 +6,7 @@ import {LocaleProvider} from 'antd';
 import zh_CN from 'antd/lib/locale-provider/zh_CN';
 import store from '@store';
 import App from './App';
-import '@scss/base.scss'
+import '@scss/base.scss';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Layout, Icon, Avatar, Popover} from 'antd';
 import {NavLink} from 'react-router-dom';
 import {logout} from '@action/user'
-import Router from '@view/router'
+import Router, {Menus} from './router'
 
 const {
     Header, Sider, Content,
@@ -19,8 +19,7 @@ class View extends Component {
         });
     }
     logout = ()=>{
-        const {logout, history} = this.props;
-        logout(history);
+        this.props.logout();
     }
     toggle = ()=>{
         this.setState({
@@ -35,11 +34,11 @@ class View extends Component {
                         <span><Icon type="thunderbolt" theme="filled" /> PP <em>支付</em></span>
                     </div>
                     <ul>
-                        <li><NavLink to='/' exact><Icon type="home" theme="filled" />首页</NavLink></li>
-                        <li><NavLink to='/order'><Icon type="tags" theme="filled"  />订单列表</NavLink></li>
-                        <li><NavLink to='/bank'><Icon type="credit-card" theme="filled" />银行账号列表</NavLink></li>
-                        <li><NavLink to='/admin'><Icon type="skin" theme="filled"  />管理账号列表</NavLink></li>
-                        <li><NavLink to='/ip'><Icon type="bulb" theme="filled"  />IP列表</NavLink></li>
+                        {
+                            Menus.map((it,key)=>(
+                                <li key={key}><NavLink to={it.path} exact={it.exact}><Icon type={it.icon} theme="filled" />{it.name}</NavLink></li>
+                            ))
+                        }
                     </ul>
                 </Sider>
             )
@@ -72,7 +71,9 @@ class View extends Component {
                             </Popover>
                         </div>
                     </Header>
-                    <Content><Router/></Content>
+                    <Content className='view-main'>
+                        <div className='view-main-content'><Router/></div>
+                    </Content>
                 </Layout>
             </Layout>
         )
@@ -85,8 +86,8 @@ const mapState =(state)=>{
 }
 const mapDispatch=(dispatch)=>{
     return {
-        logout(history){
-            dispatch(logout(history))
+        logout(){
+            dispatch(logout())
         }
     }
 }

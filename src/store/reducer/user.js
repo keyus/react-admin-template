@@ -1,3 +1,4 @@
+import history from '@history';
 let user = localStorage.getItem('user');
 try{
     user = user ? JSON.parse(user) : {}
@@ -21,7 +22,7 @@ export default (state = initState, action) => {
         case 'LOGOUT' :
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            action.history.push('/login')
+            history.push('/login')
             return {};
         default:
             return states;
