@@ -1,34 +1,19 @@
 import React, {Component} from 'react';
 import {Table} from 'antd';
-import {playOrderList} from '@api';
-import moment from 'moment';
-import './index.scss'
+import {accoutList} from '@api';
+import {pageSizeOptions} from '@config';
 import columns from './columns'
+import Filter from './filter'
 
-const formatDate = 'YYYY-MM-DD HH:mm:ss';
-export default class Order extends Component {
+export default class Account extends Component {
     state = {
         loading: false,
         page: 1,
         size: 10,
         total: 0,
         data: [],
-
-        query: {
-            orderNo: undefined,
-            userId: undefined,         //玩家ID
-            status: undefined,         //I,S,F
-            mid: undefined,
-            cardAccount: undefined,
-            realName: undefined,
-            beginTime: moment().subtract(6,'month').format(formatDate),
-            endTime: moment().format(formatDate),
-            page: 0,
-            rows: 0,
-        }
-    }
-    componentWillUnmount() {
-        this.setState = () => {};
+        sorter: {},
+        query: {}
     }
     static getDerivedStateFromProps(props, state) {
         return {
@@ -43,15 +28,30 @@ export default class Order extends Component {
     componentDidMount(){
         this.fetch();
     }
-    tableChange = (p,sorter)=>{
-
+    componentWillUnmount() {
+        accoutList.source?.cancel();
+        this.setState = () => {};
     }
+    tableChange = (pagination, sorter)=>{
+        this.setState({
+            page: pagination.current,
+            size: pagination.pageSize,
+            sorter,
+        },()=>this.fetch());
+    }
+    onSearch = (query)=>{
+        this.setState({
+            page: 1,
+            size: 10,
+            query,
+        },()=>this.fetch())
+    };
     fetch = async ()=>{
         this.setState({
             loading: true,
         })
         try {
-            const res = await playOrderList(this.state.query);
+            const res = await accoutList(this.state.query);
             this.setState({
                 total: res.total,
                 data: res.data,
@@ -63,11 +63,6 @@ export default class Order extends Component {
             })
         }
     }
-    onShowSizeChange=(current, size)=>{
-        this.setState({
-            size
-        })
-    }
 
     render() {
         const {
@@ -78,8 +73,10 @@ export default class Order extends Component {
             data,
             loading,
         } = this.state;
+
         return (
             <div>
+                <Filter onSearch={this.onSearch}/>
                 <Table columns={columns(this)}
                        loading={loading}
                        rowKey={(item, index) => index}
@@ -90,11 +87,11 @@ export default class Order extends Component {
                            pageSize: size,
                            showQuickJumper: true,
                            showSizeChanger: true,
-                           showTotal: (total) => {
+                           pageSizeOptions,
+                           total,
+                           showTotal(total){
                                return `共 ${total} 条记录 第 ${page} / ${totalPage || 1} 页`;
                            },
-                           onShowSizeChange: this.onShowSizeChange,
-                           total,
                        }}
                        dataSource={data}/>
             </div>

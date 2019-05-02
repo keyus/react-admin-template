@@ -107,3 +107,19 @@
     padding: 30px;
   }
 }
+
+.filter-form{
+  padding-bottom: 15px;
+}
+.filter-item{
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  label{
+    margin-right: 8px;
+  }
+  .filter-auto{
+    flex: 1;
+    min-width: 0;
+  }
+}

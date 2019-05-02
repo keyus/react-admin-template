@@ -10,7 +10,6 @@ class Login extends Component {
     state = {
         loading: false,
     }
-
     componentDidMount() {
         this.checkAuth();
     }
@@ -31,8 +30,12 @@ class Login extends Component {
                 loading: true,
             })
             try {
-                const res = await login(values)
-                this.props.auth(res.data)
+                // const res = await login(values)
+                this.props.auth({
+                    token: 'token',
+                    roleType: 3,
+                    ...values,
+                })
                 this.props.history.push('/');
                 this.setState({
                     loading: false,
@@ -51,7 +54,7 @@ class Login extends Component {
             <section className='login-wrapper'>
                 <Form className="login-form">
                     <div className='login-logo'>
-                        <span><Icon type="thunderbolt" theme="filled"/> PP 支付</span>
+                        <span><Icon type="thunderbolt" theme="filled"/> PP 模板</span>
                         <small>请登录</small>
                     </div>
                     <div className='login-form-bg'>

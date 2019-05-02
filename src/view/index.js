@@ -11,7 +11,14 @@ const {
 class View extends Component {
     state = {
         visible: false,
-        sideVisible: true
+        sideVisible: true,
+        usernameFirstLetter: '',
+    }
+    static getDerivedStateFromProps(props) {
+        let {username} = props.user;
+        return {
+            usernameFirstLetter: username?.toString().substr(0, 1).toLocaleUpperCase()
+        };
     }
     handleVisibleChange = (visible) => {
         this.setState({
@@ -31,7 +38,7 @@ class View extends Component {
             return (
                 <Sider className='view-side' >
                     <div className='view-logo'>
-                        <span><Icon type="thunderbolt" theme="filled" /> PP <em>支付</em></span>
+                        <span><Icon type="thunderbolt" theme="filled" /> PP <em>模板</em></span>
                     </div>
                     <ul>
                         {
@@ -45,11 +52,20 @@ class View extends Component {
         }
     }
     render() {
+        const {
+            visible,
+            usernameFirstLetter,
+        } = this.state;
+        const {
+            username,
+        } = this.props.user || {};
         return (
             <Layout className='view-container'>
                 {this.side}
                 <Layout>
-                    <Header className='view-header'>
+                    <Header className='view-header' style={{
+                        left: '220px',
+                    }}>
                         <div className='view-header-left'>
                             <Icon type="menu-fold" onClick={this.toggle}/>
                         </div>
@@ -57,17 +73,21 @@ class View extends Component {
                             <Popover
                                 content={
                                     <div className='view-user-popver'>
-                                        <p><a onClick={this.logout}><Icon type="export" /> 退出</a></p>
+                                        <p><a onClick={this.logout}><Icon type="export"/> 退出登录</a></p>
                                     </div>
                                 }
-                                title={`用户：${this.props.user.username}`}
                                 trigger="click"
-                                visible={this.state.visible}
+                                visible={visible}
                                 placement="bottomRight"
                                 onVisibleChange={this.handleVisibleChange}
                             >
-                                <Avatar icon="user" />
-                                <Icon type="caret-down" className='xi' />
+                                <div className='view-user-box'>
+                                    <Avatar style={{backgroundColor: '#039be5'}}>
+                                        {usernameFirstLetter}
+                                    </Avatar>
+                                    <span style={{marginLeft: '6px'}}>{username}</span>
+                                    <Icon type="caret-down" className='xi'/>
+                                </div>
                             </Popover>
                         </div>
                     </Header>

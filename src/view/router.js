@@ -1,22 +1,37 @@
-import React from 'react';
-import {Switch,Route} from 'react-router'
+import React, {Suspense, lazy} from 'react';
+import {Switch, Route, Redirect} from 'react-router'
+import {Skeleton} from 'antd'
+import PrivateRoute from '@com/PrivateRoute';
+import util from '@util'
 
-import Home from '@view/home'
-import Order from '@view/order'
-
+const E404 = lazy(() => import('@view/404'));
 export const Menus = [
-    { name: '首页', path: '/', exact: true, icon: 'home' },
-    { name: '订单列表', path: '/order', icon: 'tags' },
-    { name: '银行账号列表', path: '/bank', icon: 'credit-card'},
-    { name: '管理账号列表', path: '/adminUser', icon: 'skin' },
-    { name: 'IP列表', path: '/ip', icon: 'bulb' },
+    {
+        name: '账号列表',
+        path: '/account',
+        icon: 'skin',
+        role: [3],
+        component: lazy(() => import('@view/account')),
+    },
 ]
+
 
 export default function Router() {
     return (
-        <Switch>
-            <Route component={Home} path='/' exact/>
-            <Route component={Order} path='/order' />
-        </Switch>
+        <Suspense fallback={<Skeleton loading={true} active avatar/>}>
+            <Switch>
+                <Route path='/' exact render={() => <Redirect to={util.getHomePath()}/>}/>
+                {
+                    Menus.map((it, key) => (
+                        <PrivateRoute component={it.component}
+                                      key={key}
+                                      exact={it.exact}
+                                      role={it.role}
+                                      path={it.path}/>
+                    ))
+                }
+                <Route component={E404}/>
+            </Switch>
+        </Suspense>
     )
 }

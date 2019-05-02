@@ -1,10 +1,17 @@
 import http from '@http'
 
-//登录
-export const login = (data)=>{
-    return http.post('/login',data);
+const CancelToken = http.CancelToken;
+
+export function login (data){
+    login.source = CancelToken.source();
+    return http.post('/login',data,{
+        cancelToken: login.source.token
+    });
 }
-//玩家-订单列表
-export const playOrderList = (data)=>{
-    return http.post('/pay/lucky/extract/record',data);
+
+export const accoutList = (data)=>{
+    accoutList.source = CancelToken.source();
+    return http.post('/account/list',data,{
+        cancelToken: accoutList.source.token
+    });
 }

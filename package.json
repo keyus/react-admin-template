@@ -18,7 +18,8 @@
     "@babel/plugin-proposal-optional-chaining": "^7.2.0"
   },
   "devDependencies": {
-    "antd": "^3.16.1",
+    "antd": "^3.16.6",
+    "ant-design-pro": "^2.3.1",
     "axios": "^0.18.0",
     "moment": "^2.24.0",
     "classnames": "^2.2.6",
@@ -27,6 +28,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "zip": "node zip.js",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },

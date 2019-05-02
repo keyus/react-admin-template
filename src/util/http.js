@@ -2,15 +2,21 @@ import axios from 'axios'
 import {message} from 'antd'
 import store from '@store'
 import {logout} from '@action/user'
+
+const NoMessageCode = [
+        0,
+]
 class Http {
-    baseURL= '';
+    baseURL= '/api';
     timeout= '';
+    CancelToken = axios.CancelToken;
     fetch = axios.create({
         baseURL: this.baseURL,
         timeout: this.timeout,
     })
     constructor(){
         this.init();
+        this.fetch.CancelToken = this.CancelToken;
         return this.fetch;
     }
     init = ()=>{
@@ -30,10 +36,13 @@ class Http {
             if(response.data.code === 0){
                 return response.data;
             }
-            message.error(response.data?.msg)
-            return Promise.reject();
+            if(!NoMessageCode.includes(response.data?.code)){
+                message.error(response.data?.msg)
+            }
+            return Promise.reject(response.data);
         }, error=>{
-            if(error.response.status === 401){
+            if(error?.__CANCEL__) return Promise.reject(error);
+            if(error?.response?.status === 401){
                 message.error('token失效,请重新登录');
                 store.dispatch(logout());
             }else{
