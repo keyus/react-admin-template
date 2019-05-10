@@ -6,7 +6,28 @@ const {
     addWebpackAlias,
 } = require('customize-cra');
 const path = require("path");
+const zip = require("./zip");
 
+//build 之后打包插件
+class DoneZipPlugin {
+    constructor(options) {
+        this.options = options;
+    }
+    apply(compiler) {
+        compiler.hooks.done.tap('DoneZipPlugin', () => {
+            setTimeout(()=>{
+                zip.startZip();
+            },50)
+        });
+    }
+}
+
+const zipPlugin = config => {
+    if(process.env.NODE_ENV === 'production'){
+        config.plugins.push(new DoneZipPlugin())
+    }
+    return config;
+}
 module.exports = {
     webpack: override(
         addBabelPlugin('@babel/plugin-proposal-optional-chaining'),
@@ -29,7 +50,8 @@ module.exports = {
             ["@assets"]: path.resolve(__dirname, "src/assets/"),
             ["@scss"]: path.resolve(__dirname, "src/scss/"),
             ["@img"]: path.resolve(__dirname, "src/img/"),
-        })
+        }),
+        zipPlugin,              //如build之后不需要压缩，请注释
     ),
     devServer: function (configs) {
         return function(proxy, allowedHost) {
